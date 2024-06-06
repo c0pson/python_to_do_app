@@ -22,7 +22,7 @@ class MainWindow(ctk.CTk):
         side_panel = EventsBar(new_frame)
         side_panel.pack(side=ctk.LEFT, fill=ctk.Y)
         add_widget = AddNewEvent(self)
-        add_widget.place(relx=0.95, rely=0.93, anchor='center')
+        add_widget.place(relx=0.95, rely=0.93, anchor='center') # relx | rely to consider
 
 if __name__ == "__main__":
     app = MainWindow()

@@ -1,5 +1,6 @@
 import customtkinter as ctk
 
+# Imported properties
 from properties import Colors
 
 class AddNewEvent(ctk.CTkLabel):

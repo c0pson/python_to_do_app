@@ -30,13 +30,15 @@ class EventsBar(ctk.CTkFrame):
     def events_container(self) -> None:
         self.events: dict = self.load_events()
         self.container = ctk.CTkScrollableFrame(self, fg_color=Colors.SECOND_COLOR,
-                                            )
-        self.container.pack(side=ctk.BOTTOM, padx=Window.PAD_X, pady=Window.PAD_Y,
+                                                scrollbar_button_color=Colors.SECOND_COLOR,
+                                                scrollbar_button_hover_color=Colors.SECOND_COLOR)
+        self.container.pack(side=ctk.BOTTOM, padx=0, pady=0,
                         fill=ctk.Y, expand= True)
         for key, event in self.events.items():
             self.load_button(key, event)
 
     def load_events(self) -> dict:
+        # TODO: file handle
         file_name: str = f'{os.path.join(os.path.dirname(__file__), '..') + Paths.EVENTS}'
         events: dict = {}
         with open(file_name, 'r') as file:
@@ -55,10 +57,15 @@ class EventsBar(ctk.CTkFrame):
 
     def load_event_content(self, key: int) -> None:
         if not self.current_content:
-            event_content = EventContent(self.master, self.events[key])
+            event_content = EventContent(self.master, self.events, self.events[key], key, self)
             event_content.pack(side=ctk.RIGHT, fill=ctk.BOTH, expand=True)
             self.current_content = event_content
         else:
             self.current_content.destroy()
             self.current_content = None
             self.load_event_content(key)
+
+    def remove_from_dictionary(self, key: int) -> None:
+        self.button_dict[key].destroy()
+        del self.button_dict[key]
+        del self.events[key]
