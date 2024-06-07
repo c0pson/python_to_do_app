@@ -69,3 +69,10 @@ class EventsBar(ctk.CTkFrame):
         self.button_dict[key].destroy()
         del self.button_dict[key]
         del self.events[key]
+
+    def edit_in_dictionary(self, key: int, new_data: str) -> None:
+        title = f'{self.events[key].split(',',1)[0]}'
+        self.button_dict[key].configure(text=title)
+        self.current_content.destroy()
+        self.load_event_content(key)
+        self.events[key] = new_data
