@@ -13,6 +13,7 @@ class EventContent(ctk.CTkFrame):
         self.key: int = key
         self.event_bar = event_bar
         self.buttons_frame = ctk.CTkFrame(self, fg_color=Colors.MAIN_COLOR)
+        self.original_info: str = ''
         self.setup()
 
     def setup(self) -> None:
@@ -20,9 +21,25 @@ class EventContent(ctk.CTkFrame):
         self.content_date()
         self.content_time()
         self.content_notes()
+        self.get_original_info()
         self.buttons_frame.place(x=120, rely=0.93, anchor='center')
         self.remove_event_button()
         self.save_edited_event_button()
+
+    def get_original_info(self) -> None:
+        # title
+        title = self.title.get()
+    # date
+        date_day = self.event_date_day.get()
+        date_month = self.event_date_month.get()
+        date_year = self.event_date_year.get()
+    # time
+        time_hour = self.event_time_hour.get()
+        time_minutes = self.event_time_minutes.get()
+    # notes
+        notes = self.event_notes.get('0.0', 'end')
+    # all together
+        self.original_info: str = f'{title},{date_day}.{date_month}.{date_year},{time_hour}:{time_minutes},{notes[:-1]}'
 
     def content_title(self) -> None:
     # title frame
@@ -95,10 +112,15 @@ class EventContent(ctk.CTkFrame):
 
     def content_notes(self) -> None:
         self.event_notes = ctk.CTkTextbox(self, fg_color=Colors.MAIN_COLOR,
-                                border_color=Colors.MAIN_COLOR,
+                                border_color=Colors.MAIN_COLOR, wrap='word',
                                 font=ctk.CTkFont('Comic Sans', 32))
-        self.event_notes.insert('0.0', f'{self.event.split(',',3)[3]}', None)
-        self.event_notes.pack(side=ctk.TOP, padx=40, pady=5, anchor=ctk.W)
+        notes = f'{self.event.split(',',3)[3]}'
+        self.event_notes.insert('0.0', notes)
+        self.event_notes.pack(side=ctk.TOP, padx=100, anchor=ctk.N,
+                            fill=ctk.BOTH, expand=True)
+        spacing = ctk.CTkFrame(self, width=1, height=1, corner_radius=0,
+                                fg_color=Colors.MAIN_COLOR)
+        spacing.pack(side=ctk.BOTTOM, padx=50, pady=100)
 
     def remove_event_button(self) -> None:
         remove_button = ctk.CTkButton(self.buttons_frame, text='REMOVE',
@@ -121,17 +143,21 @@ class EventContent(ctk.CTkFrame):
 
     def edit_event(self) -> None:
     # title
-        new_title = self.title.get()
+        new_title: str = self.title.get()
     # date
-        new_date_day = self.event_date_day.get()
-        new_date_month = self.event_date_month.get()
-        new_date_year = self.event_date_year.get()
+        new_date_day: str = self.event_date_day.get()
+        new_date_month: str = self.event_date_month.get()
+        new_date_year: str = self.event_date_year.get()
     # time
-        new_time_hour = self.event_time_hour.get()
-        new_time_minutes = self.event_time_minutes.get()
+        new_time_hour: str = self.event_time_hour.get()
+        new_time_minutes: str = self.event_time_minutes.get()
     # notes
-        new_notes = self.event_notes.get('0.0', 'end')
+        new_notes: str = self.event_notes.get('0.0', 'end')
     # all together
         new_event_data: str = f'{new_title},{new_date_day}.{new_date_month}.{new_date_year},{new_time_hour}:{new_time_minutes},{new_notes[:-1]}'
+        print(self.original_info)
+        print(new_event_data)
+        if self.original_info == new_event_data:
+            return
         self.event_bar.edit_in_dictionary(self.key, new_event_data)
         edit_event(self.events, self.key, new_event_data)
