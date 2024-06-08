@@ -22,7 +22,7 @@ class EventsBar(ctk.CTkFrame):
         self.events_container()
 
     def title(self) -> None:
-        title_of_the_bar = ctk.CTkLabel(self, text='Events: ', 
+        title_of_the_bar = ctk.CTkLabel(self, text='Events: ', text_color=Colors.TEXT_COLOR,
                                         font=ctk.CTkFont('Comic Sans', int(Window.SIZE_x32)))
         title_of_the_bar.pack(side=ctk.TOP, padx=int(Window.PAD_X), pady=int(Window.PAD_Y),
                                 anchor=ctk.W)
@@ -50,7 +50,9 @@ class EventsBar(ctk.CTkFrame):
     def load_button(self, key: int, name: str) -> None:
         name: list = name.split(',', 1)
         new_button = ctk.CTkButton(master=self.container, text=name[0],
-                                    width=160, height=40, font=ctk.CTkFont('Comic Sans', 20),
+                                    text_color=Colors.TEXT_COLOR,
+                                    corner_radius=0, width=160, height=40,
+                                    font=ctk.CTkFont('Comic Sans', 20),
                                     command=lambda: self.load_event_content(key))
         new_button.pack(side='top', padx=5, pady=5, fill=ctk.X)
         self.button_dict[key] = new_button
@@ -61,6 +63,8 @@ class EventsBar(ctk.CTkFrame):
             event_content.pack(side=ctk.RIGHT, fill=ctk.BOTH, expand=True)
             self.current_content = event_content
         else:
+            if self.current_content.key == key:
+                return
             self.current_content.destroy()
             self.current_content = None
             self.load_event_content(key)
@@ -74,5 +78,6 @@ class EventsBar(ctk.CTkFrame):
         title = f'{new_data.split(',',1)[0]}'
         self.button_dict[key].configure(text=title)
         self.current_content.destroy()
+        self.current_content = None
         self.events[key] = new_data
         self.load_event_content(key)
