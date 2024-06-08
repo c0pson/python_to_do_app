@@ -4,6 +4,12 @@ import os
 from properties import Paths
 
 def remove_event(events: dict, key: int) -> None:
+    """Function removing line from database with all user events.
+
+    Args:
+        events (dict): dictionary of all events.
+        key (int): key of the event in dictionary
+    """
     file_name: str = f'{os.path.join(os.path.dirname(__file__), '..') + Paths.EVENTS}'
     new_content: str = ''
     with open(file_name, 'r') as file:
@@ -23,6 +29,7 @@ def edit_event(events: dict, key: int, event_edit: str) -> None:
         key (int): key of the event in dictionary
         event_edit (str): string with which info will be replaced
     """
+    event_edit = event_edit.replace('\n', ' /n|').replace('\r', ' /r|')
     file_name: str = f'{os.path.join(os.path.dirname(__file__), '..') + Paths.EVENTS}'
     new_content: str = ''
     with open(file_name, 'r') as file:
