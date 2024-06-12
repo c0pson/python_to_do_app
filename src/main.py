@@ -11,17 +11,14 @@ from bar import EventsBar
 class MainWindow(ctk.CTk):
     """Class handling main window and initializing all widgets in app.
     To do app can store all your events, date and time of them alongside 
-    the short notes.
-    
-    Args:
-        ctk.CTk: initialization of customtkinter window app
-    """
+    the short notes."""
     def __init__(self) -> None:
         """Initialization of window.
         """
         super().__init__(fg_color=Colors.BACKGROUND)
         self.title('Event planner')
         self.geometry(f'{int(Window.WIDTH)}x{int(Window.HEIGHT)}')
+        self.minsize(Window.WIDTH, Window.HEIGHT)
         self.setup()
 
     def setup(self) -> None:
