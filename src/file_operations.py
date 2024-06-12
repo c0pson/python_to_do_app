@@ -40,3 +40,8 @@ def edit_event(events: dict, key: int, event_edit: str) -> None:
                 new_content += f'{event_edit}\n'
     with open(file_name, 'w') as file:
         file.write(new_content)
+
+def add_event(events: dict, new_event: str) -> None:
+    file_name: str = f'{os.path.join(os.path.dirname(__file__), '..') + Paths.EVENTS}'
+    with open(file_name, 'a') as file:
+        file.write(f'{new_event}\n')
