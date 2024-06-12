@@ -14,7 +14,7 @@ class EventsBar(ctk.CTkFrame):
         super().__init__(self.master, fg_color=Colors.SECOND_COLOR)
         self.button_dict: dict = {}
         self.setup()
-        self.current_content = None
+        self.current_content: EventContent | None = None
 
     def setup(self) -> None:
         self.title()
@@ -24,8 +24,7 @@ class EventsBar(ctk.CTkFrame):
     def title(self) -> None:
         title_of_the_bar = ctk.CTkLabel(self, text='Events: ', text_color=Colors.TEXT_COLOR,
                                         font=ctk.CTkFont('Comic Sans', int(Window.SIZE_x32)))
-        title_of_the_bar.pack(side=ctk.TOP, padx=int(Window.PAD_X), pady=int(Window.PAD_Y),
-                                anchor=ctk.W)
+        title_of_the_bar.pack(side=ctk.TOP, padx=int(Window.PAD_X), pady=int(Window.PAD_Y), anchor=ctk.W)
 
     def events_container(self) -> None:
         self.events: dict = self.load_events()
@@ -43,13 +42,12 @@ class EventsBar(ctk.CTkFrame):
         events: dict = {}
         with open(file_name, 'r') as file:
             for line_number, line in enumerate(file):
-                line: str = line.strip()
-                events[line_number] = line
+                stripped_line: str = line.strip()
+                events[line_number] = stripped_line
         return events
 
     def load_button(self, key: int, name: str) -> None:
-        name: list = name.split(',', 1)
-        new_button = ctk.CTkButton(master=self.container, text=name[0],
+        new_button = ctk.CTkButton(master=self.container, text=name.split(',', 1)[0],
                                     text_color=Colors.TEXT_COLOR,
                                     corner_radius=0, width=160, height=40,
                                     font=ctk.CTkFont('Comic Sans', 20),
@@ -77,7 +75,8 @@ class EventsBar(ctk.CTkFrame):
     def edit_in_dictionary(self, key: int, new_data: str) -> None:
         title = f'{new_data.split(',',1)[0]}'
         self.button_dict[key].configure(text=title)
-        self.current_content.destroy()
+        if self.current_content:
+            self.current_content.destroy()
         self.current_content = None
         self.events[key] = new_data
         self.load_event_content(key)
