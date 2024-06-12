@@ -8,6 +8,8 @@ class Colors(str, Enum):
     ACCENT_COLOR_2 = '#DFD0B8'
     RED = '#DD403A'
     RED_HOVER = '#8E3B3D'
+    GREEN = '#BFEA7C'
+    GREEN_HOVER = '#9BCF53'
     TEXT_COLOR = '#FFFCE8'
 
 class Window(int, Enum):
